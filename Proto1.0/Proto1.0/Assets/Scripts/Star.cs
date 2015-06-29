@@ -7,7 +7,9 @@ public class Star : MonoBehaviour
 	public int _Health = 0;
 	public int _Armor = 0;
 	public int _StarSize = 0;
+	public int _StarLevel = 0;
 	public float _MovingSpeed = 0.0f;
+	public float _CollisionDistance = 0.0f;
 
 	// Use this for initialization
 	public virtual void Start () 
@@ -20,8 +22,6 @@ public class Star : MonoBehaviour
 	public virtual void Update()
 	{//start update function
 
-		Move();
-
 	}//end update function
 
 	public virtual void Move()
@@ -32,7 +32,6 @@ public class Star : MonoBehaviour
 		{//start if1
 
 			this.gameObject.transform.position += new Vector3(-1.0f,0.0f,0.0f) * _MovingSpeed * Time.deltaTime;
-			Debug.Log("moving left");
 
 		}//end if1
 
@@ -41,7 +40,6 @@ public class Star : MonoBehaviour
 		{//start if2
 
 			this.gameObject.transform.position += new Vector3(1.0f,0.0f,0.0f) * _MovingSpeed * Time.deltaTime;
-			Debug.Log("moving right");
 
 		}//end if2
 
@@ -49,7 +47,6 @@ public class Star : MonoBehaviour
 		{//start if3
 
 			this.gameObject.transform.position += new Vector3(0.0f,1.0f,.0f) * _MovingSpeed * Time.deltaTime;
-			Debug.Log("moving up");
 			
 		}//end if3
 
@@ -57,21 +54,61 @@ public class Star : MonoBehaviour
 		{//start if4
 
 			this.gameObject.transform.position += new Vector3(0.0f,-1.0f,0.0f) * _MovingSpeed * Time.deltaTime;
-			Debug.Log("moving down");
 			
 		}//end if4
 
 	}//end move function
 
-	public virtual void TakeDamage()
+	public virtual bool CollisionCheck(GameObject objectTocheckCollisionAgainst, float collisionDistance)
+	{//start distance check function
+
+		if (Vector3.Distance(this.gameObject.transform.position, objectTocheckCollisionAgainst.gameObject.transform.position) < collisionDistance) 
+		{//start if1
+
+			//Debug.Log("collided with:" + objectTocheckCollisionAgainst.gameObject.name);
+			return true;
+		
+		}//end if1
+		else 
+		{//start else 1
+
+			//Debug.Log("not colliding");
+			return false;
+
+		}//end else 1
+
+	}//end distance check function
+
+	public virtual void TakeDamage(int damageToTake)
 	{//start take damage function
 
+		int totalDamageToTake = damageToTake - _Armor;
+
+		if (totalDamageToTake <= 0) 
+		{//start if
+
+			totalDamageToTake = 0;
+
+		}//end if1
+
+		_Health -= totalDamageToTake;
 
 	}//end take damage function
+
+	public virtual int GiveDamage(int damageToGive)
+	{//start give damage function
+
+		int totalDamageToGive = damageToGive * (_StarSize * _StarLevel);
+
+		return totalDamageToGive;
+
+	}//end give damamge function
 
 	public virtual void Die()
 	{//start die function
 
+		Debug.Log ("Star has died :(");
+		Destroy (this.gameObject);
 
 	}//end die function
 

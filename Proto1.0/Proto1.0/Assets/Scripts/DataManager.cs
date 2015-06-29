@@ -17,6 +17,10 @@ public class DataManager : MonoBehaviour
 	public static GameObject _Player = null;
 	//======================================
 
+	//holds reference to the player's class to get its functions
+	public static Player _PlayerClass = null;
+	//===============================================
+
 	// Use this for initialization
 	void Start () 
 	{//constructor start
@@ -24,11 +28,28 @@ public class DataManager : MonoBehaviour
 		if (_NameOfPlayer == "") 
 		{//start if1
 
-			Debug.LogWarning("_nameOfPlayer is empty");
+			Debug.LogWarning ("_nameOfPlayer is empty");
 
 		}//end if1
-		GameObject.Find(_NameOfPlayer);
-	
+		else if (_NameOfPlayer != "")
+		{//start else if
+
+			_Player = GameObject.Find (_NameOfPlayer);
+
+		}//end else if
+
+		if (_Player != null) {//start if2
+
+			_PlayerClass = _Player.GetComponent<Player> ();
+
+		}//end if2
+		else if (_Player == null)
+		{//start else 2
+
+			Debug.LogWarning("_Player variable is empty");
+
+		}//end else 2
+
 	}//constructor end
 	
 
